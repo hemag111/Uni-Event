@@ -253,6 +253,11 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    match /institutions/{institutionId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
     // Root-level Certificates Collection
     match /certificates/{certId} {
       allow read: if request.auth != null && (
@@ -285,7 +290,8 @@ service cloud.firestore {
       // Write operations with rate limit checks
       allow create: if request.auth != null 
                     && (isAdmin() || (isClub() && checkWriteRate(request.auth.uid) && checkEventDailyRate(request.auth.uid)))
-                    && validateEventShape(request.resource.data);
+                    && validateEventShape(request.resource.data)
+                    && exists(/databases/$(database)/documents/institutions/$(request.resource.data.campusId));
       
       allow update: if request.auth != null 
                     && (isAdmin() || ('ownerId' in resource.data && request.auth.uid == resource.data.ownerId && checkWriteRate(request.auth.uid)))
