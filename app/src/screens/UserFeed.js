@@ -153,7 +153,7 @@ const UserFeedStickyHeader = ({
                                 </LinearGradient>
                             ) : (
                                 <View
-                                    style={[styles.chip, { backgroundColor: theme.colors.surface }]}
+                                style={[styles.chip, { backgroundColor: theme.colors.surface }]}
                                 >
                                     <Text
                                         style={[
@@ -194,6 +194,19 @@ export default function UserFeed() {
     const { theme } = useTheme();
     const { width } = useWindowDimensions();
     const [events, setEvents] = useState([]);
+    const [institutions, setInstitutions] = useState([]);
+    const [selectedCampus, setSelectedCampus] = useState('all');
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const snap = await getDocs(collection(db, 'institutions'));
+                setInstitutions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+            } catch (e) {
+                console.log('Institutions fetch error', e);
+            }
+        })();
+    }, []);
     const [participatingIds, setParticipatingIds] = useState([]); // Track joined events
     const [activeFilter, setActiveFilter] = useState('Upcoming');
     const [searchHistory, setSearchHistory] = useState([]);
@@ -383,6 +396,13 @@ export default function UserFeed() {
         return () => unsubscribe();
     }, [user, isFocused]);
 
+    const visibleEvents = useMemo(() => {
+        if (selectedCampus === 'all') return events;
+        return events.filter(
+            e => e.federatedToAll === true || e.campusId === selectedCampus,
+        );
+    }, [events, selectedCampus]);
+
     const fetchEventsPage = useCallback(async cursorDoc => {
         const constraints = [orderBy('startAt', 'desc')];
         if (cursorDoc) {
@@ -500,7 +520,7 @@ export default function UserFeed() {
 
     const getFilteredEvents = () => {
         const now = new Date();
-        let filtered = events;
+        let filtered = visibleEvents;
 
         // 0. Search Query Filtering
         if (debouncedQuery.trim()) {
@@ -653,6 +673,45 @@ export default function UserFeed() {
 
     const renderHeader = () => (
         <Animated.View style={{ transform: [{ translateY: headerTranslateY }] }}>
+            {/* Campus Filter */}
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
+            >
+                <TouchableOpacity
+                    onPress={() => setSelectedCampus('all')}
+                    style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 8,
+                        borderRadius: 20,
+                        marginRight: 8,
+                        backgroundColor: selectedCampus === 'all' ? theme.colors.primary : theme.colors.surface,
+                    }}
+                >
+                    <Text style={{ color: selectedCampus === 'all' ? '#fff' : theme.colors.text, fontWeight: '600' }}>
+                        All Campuses
+                    </Text>
+                </TouchableOpacity>
+                {institutions.map(inst => (
+                    <TouchableOpacity
+                        key={inst.id}
+                        onPress={() => setSelectedCampus(inst.id)}
+                        style={{
+                            paddingHorizontal: 16,
+                            paddingVertical: 8,
+                            borderRadius: 20,
+                            marginRight: 8,
+                            backgroundColor: selectedCampus === inst.id ? theme.colors.primary : theme.colors.surface,
+                        }}
+                    >
+                        <Text style={{ color: selectedCampus === inst.id ? '#fff' : theme.colors.text, fontWeight: '600' }}>
+                            {inst.name}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+
             {/* Friends Events Rail */}
             {friendsEvents.length > 0 && (
                 <View style={{ marginBottom: 20 }}>
@@ -714,7 +773,7 @@ export default function UserFeed() {
                 <Animated.SectionList
                     sections={[{ data: groupedData }]}
                     keyExtractor={row => row.map(e => e.id).join('-')}
-                    renderItem={renderEvent}
+                    
                     renderSectionHeader={renderStickyHeader}
                     ListHeaderComponent={renderHeader}
                     stickySectionHeadersEnabled={true}
@@ -885,3 +944,4 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
 });
+renderItem={renderEvent}

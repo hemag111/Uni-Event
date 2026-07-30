@@ -406,6 +406,32 @@ const EventCard = memo(
                             {event.category}
                         </Text>
                     </View>
+                    {event.federatedToAll ? (
+                        <View style={[styles.categoryBadge, { backgroundColor: theme.colors.primary, top: 44 }]}>
+                            <Text style={[styles.categoryText, { color: '#fff' }]}>
+                                All Campuses
+                            </Text>
+                        </View>
+                    ) : event.campusId ? (
+                        <View style={[styles.categoryBadge, { backgroundColor: theme.colors.surface, top: 44 }]}>
+                            <Text style={[styles.categoryText, { color: theme.colors.text }]}>
+                                {event.campusId}
+                            </Text>
+                        </View>
+                    ) : null}
+                    {event.federatedToAll ? (
+                        <View style={[styles.categoryBadge, { backgroundColor: theme.colors.primary, top: 44 }]}>
+                            <Text style={[styles.categoryText, { color: '#fff' }]}>
+                                All Campuses
+                            </Text>
+                        </View>
+                    ) : event.campusId ? (
+                        <View style={[styles.categoryBadge, { backgroundColor: theme.colors.surface, top: 44 }]}>
+                            <Text style={[styles.categoryText, { color: theme.colors.text }]}>
+                                {event.campusId}
+                            </Text>
+                        </View>
+                    ) : null}
                     {renderBannerBadges()}
                 </View>
 
