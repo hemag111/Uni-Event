@@ -153,7 +153,7 @@ const UserFeedStickyHeader = ({
                                 </LinearGradient>
                             ) : (
                                 <View
-                                style={[styles.chip, { backgroundColor: theme.colors.surface }]}
+                                    style={[styles.chip, { backgroundColor: theme.colors.surface }]}
                                 >
                                     <Text
                                         style={[
@@ -398,9 +398,7 @@ export default function UserFeed() {
 
     const visibleEvents = useMemo(() => {
         if (selectedCampus === 'all') return events;
-        return events.filter(
-            e => e.federatedToAll === true || e.campusId === selectedCampus,
-        );
+        return events.filter(e => e.federatedToAll === true || e.campusId === selectedCampus);
     }, [events, selectedCampus]);
 
     const fetchEventsPage = useCallback(async cursorDoc => {
@@ -688,10 +686,18 @@ export default function UserFeed() {
                             paddingVertical: 8,
                             borderRadius: 20,
                             marginRight: 8,
-                            backgroundColor: selectedCampus === opt.id ? theme.colors.primary : theme.colors.surface,
+                            backgroundColor:
+                                selectedCampus === opt.id
+                                    ? theme.colors.primary
+                                    : theme.colors.surface,
                         }}
                     >
-                        <Text style={{ color: selectedCampus === opt.id ? '#fff' : theme.colors.text, fontWeight: '600' }}>
+                        <Text
+                            style={{
+                                color: selectedCampus === opt.id ? '#fff' : theme.colors.text,
+                                fontWeight: '600',
+                            }}
+                        >
                             {opt.name}
                         </Text>
                     </TouchableOpacity>

@@ -407,20 +407,45 @@ const EventCard = memo(
                         </Text>
                     </View>
                     {(event.federatedToAll || event.campusId) && (
-                        <View style={[styles.categoryBadge, { backgroundColor: event.federatedToAll ? theme.colors.primary : theme.colors.surface, top: 44 }]}>
-                            <Text style={[styles.categoryText, { color: event.federatedToAll ? '#fff' : theme.colors.text }]}>
+                        <View
+                            style={[
+                                styles.categoryBadge,
+                                {
+                                    backgroundColor: event.federatedToAll
+                                        ? theme.colors.primary
+                                        : theme.colors.surface,
+                                    top: 44,
+                                },
+                            ]}
+                        >
+                            <Text
+                                style={[
+                                    styles.categoryText,
+                                    { color: event.federatedToAll ? '#fff' : theme.colors.text },
+                                ]}
+                            >
                                 {event.federatedToAll ? 'All Campuses' : event.campusId}
                             </Text>
                         </View>
                     )}
                     {event.federatedToAll ? (
-                        <View style={[styles.categoryBadge, { backgroundColor: theme.colors.primary, top: 44 }]}>
+                        <View
+                            style={[
+                                styles.categoryBadge,
+                                { backgroundColor: theme.colors.primary, top: 44 },
+                            ]}
+                        >
                             <Text style={[styles.categoryText, { color: '#fff' }]}>
                                 All Campuses
                             </Text>
                         </View>
                     ) : event.campusId ? (
-                        <View style={[styles.categoryBadge, { backgroundColor: theme.colors.surface, top: 44 }]}>
+                        <View
+                            style={[
+                                styles.categoryBadge,
+                                { backgroundColor: theme.colors.surface, top: 44 },
+                            ]}
+                        >
                             <Text style={[styles.categoryText, { color: theme.colors.text }]}>
                                 {event.campusId}
                             </Text>
