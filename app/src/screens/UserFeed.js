@@ -679,34 +679,20 @@ export default function UserFeed() {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
             >
-                <TouchableOpacity
-                    onPress={() => setSelectedCampus('all')}
-                    style={{
-                        paddingHorizontal: 16,
-                        paddingVertical: 8,
-                        borderRadius: 20,
-                        marginRight: 8,
-                        backgroundColor: selectedCampus === 'all' ? theme.colors.primary : theme.colors.surface,
-                    }}
-                >
-                    <Text style={{ color: selectedCampus === 'all' ? '#fff' : theme.colors.text, fontWeight: '600' }}>
-                        All Campuses
-                    </Text>
-                </TouchableOpacity>
-                {institutions.map(inst => (
+                {[{ id: 'all', name: 'All Campuses' }, ...institutions].map(opt => (
                     <TouchableOpacity
-                        key={inst.id}
-                        onPress={() => setSelectedCampus(inst.id)}
+                        key={opt.id}
+                        onPress={() => setSelectedCampus(opt.id)}
                         style={{
                             paddingHorizontal: 16,
                             paddingVertical: 8,
                             borderRadius: 20,
                             marginRight: 8,
-                            backgroundColor: selectedCampus === inst.id ? theme.colors.primary : theme.colors.surface,
+                            backgroundColor: selectedCampus === opt.id ? theme.colors.primary : theme.colors.surface,
                         }}
                     >
-                        <Text style={{ color: selectedCampus === inst.id ? '#fff' : theme.colors.text, fontWeight: '600' }}>
-                            {inst.name}
+                        <Text style={{ color: selectedCampus === opt.id ? '#fff' : theme.colors.text, fontWeight: '600' }}>
+                            {opt.name}
                         </Text>
                     </TouchableOpacity>
                 ))}
