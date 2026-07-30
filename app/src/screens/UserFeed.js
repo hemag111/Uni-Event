@@ -759,7 +759,7 @@ export default function UserFeed() {
                 <Animated.SectionList
                     sections={[{ data: groupedData }]}
                     keyExtractor={row => row.map(e => e.id).join('-')}
-                    
+                    renderItem={renderEvent}
                     renderSectionHeader={renderStickyHeader}
                     ListHeaderComponent={renderHeader}
                     stickySectionHeadersEnabled={true}
@@ -930,4 +930,3 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
 });
-renderItem={renderEvent}
