@@ -203,8 +203,9 @@ describe('CreateEvent transaction flow', () => {
         );
         fireEvent.changeText(getByPlaceholderText('e.g. Auditorium / Room 302'), 'Main Hall');
 
-        fireEvent.press(getByText('Tech'));
-        fireEvent.press(getAllByText('Create Event').at(1));
+       fireEvent.press(getByText('Tech'));
+fireEvent.press(getByText('Open to All Campuses'));
+fireEvent.press(getAllByText('Create Event').at(1));
 
         await waitFor(() => {
             expect(mockRunTransaction).toHaveBeenCalledTimes(1);
