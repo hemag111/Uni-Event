@@ -424,7 +424,8 @@ export default function CreateEvent({ navigation, route }) {
                 if (rateLimitErr.status === 429) {
                     Alert.alert('Too Many Requests', rateLimitErr.message);
                     setLoading(false);
-                    return;
+...(federatedToAll ? {} : { campusId }),
+                federatedToAll,                    return;
                 }
                 throw rateLimitErr;
             }
