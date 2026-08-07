@@ -424,8 +424,7 @@ export default function CreateEvent({ navigation, route }) {
                 if (rateLimitErr.status === 429) {
                     Alert.alert('Too Many Requests', rateLimitErr.message);
                     setLoading(false);
-...(federatedToAll ? {} : { campusId }),
-                federatedToAll,                    return;
+                    return;
                 }
                 throw rateLimitErr;
             }
@@ -472,7 +471,7 @@ export default function CreateEvent({ navigation, route }) {
                     years: targetYears.length ? targetYears : [1, 2, 3, 4],
                 },
                 bannerUrl,
-                campusId: campusId || null,
+                ...(federatedToAll ? {} : { campusId }),
                 federatedToAll,
                 capacity: capacity ? Number.parseInt(capacity, 10) : null,
                 hasCustomForm: useCustomForm,
