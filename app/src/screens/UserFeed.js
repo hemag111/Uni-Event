@@ -95,7 +95,7 @@ const UserFeedStickyHeader = ({
                     showsHorizontalScrollIndicator={false}
                     style={styles.historyScroll}
                 >
-                    {searchHistory.map(qh => (
+                    {(searchHistory ?? []).map(qh => (
                         <TouchableOpacity
                             key={qh}
                             style={styles.historyChip}
@@ -127,7 +127,7 @@ const UserFeedStickyHeader = ({
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.filterContent}
             >
-                {FILTERS.map(f => {
+                {(FILTERS ?? []).map(f => {
                     const isActive = activeFilter === f;
                     return (
                         <TouchableOpacity
@@ -546,7 +546,7 @@ export default function UserFeed() {
 
                 // Check Year
                 const targetYears = e.target?.years || [];
-                const userYear = parseInt(userData.year || 0);
+                const userYear = parseInt(userData.year || 0, 10);
                 // If targetYears is empty/undefined, assume open to all.
                 const yearMatch = targetYears.length === 0 || targetYears.includes(userYear);
 

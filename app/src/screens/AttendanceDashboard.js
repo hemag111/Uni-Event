@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+﻿import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
     collection,
@@ -996,7 +996,7 @@ const CheckInItem = ({ item }) => {
                 <View style={styles.checkInMeta}>
                     <Ionicons name="school-outline" size={12} color={theme.colors.textSecondary} />
                     <Text style={[styles.checkInDetails, { color: theme.colors.textSecondary }]}>
-                        {item.userBranch} • Year {item.userYear}
+                        {item.userBranch} ΓÇó Year {item.userYear}
                     </Text>
                 </View>
             </View>

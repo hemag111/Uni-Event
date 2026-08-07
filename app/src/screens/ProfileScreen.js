@@ -185,7 +185,7 @@ const ProfileBadgeShelf = ({
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.profileBadgeShelfList}
         >
-            {badges.map(badge => {
+            {(badges ?? []).map(badge => {
                 const isSelected = badge.id === selectedBadgeId;
 
                 return (
@@ -380,7 +380,7 @@ export default function ProfileScreen({ navigation }) {
                 bio: bio,
                 instagram: instagram,
                 linkedin: linkedin,
-                year: parseInt(year),
+                year: parseInt(year, 10),
                 branch: finalBranch,
             };
 
@@ -768,7 +768,7 @@ export default function ProfileScreen({ navigation }) {
                                 {/* Other badges as chips */}
                                 {otherBadges.length > 0 && (
                                     <View style={styles.badgesRow}>
-                                        {otherBadges.map(badge => (
+                                        {(otherBadges ?? []).map(badge => (
                                             <View
                                                 key={badge}
                                                 style={[
