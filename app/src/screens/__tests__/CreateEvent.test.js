@@ -167,6 +167,7 @@ jest.mock('firebase/firestore', () => ({
     runTransaction: (...args) => mockRunTransaction(...args),
     increment: (...args) => mockIncrement(...args),
     serverTimestamp: (...args) => mockServerTimestamp(...args),
+    getDocs: jest.fn(() => Promise.resolve({ docs: [] })),
 }));
 
 import { Alert } from 'react-native';
