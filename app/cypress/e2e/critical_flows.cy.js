@@ -1,4 +1,4 @@
-﻿describe('Critical Event App Flows', () => {
+describe('Critical Event App Flows', () => {
     beforeEach(() => {
         cy.visit('/');
         // Set mock user session using our Cypress hook
