@@ -279,15 +279,14 @@ service cloud.firestore {
     // EVENTS COLLECTION & SUBCOLLECTIONS
     // =========================================================================
 
-    match /events/{eventId} {
+   match /events/{eventId} {
       allow read: if request.auth != null && (
         isAdmin() ||
         (resource.data.get('federatedToAll', false) == true) ||
         isSameCampus(resource.data.get('campusId', null)) ||
         (getUserCampus() != null && getUserCampus() in resource.data.get('allowedCampusIds', []))
       );
-      
-      // Write operations with rate limit checks
+
       allow create: if request.auth != null 
                     && (isAdmin() || (isClub() && checkWriteRate(request.auth.uid) && checkEventDailyRate(request.auth.uid)))
                     && validateEventShape(request.resource.data)
@@ -300,7 +299,6 @@ service cloud.firestore {
       allow delete: if request.auth != null 
                     && (isAdmin() || ('ownerId' in resource.data && request.auth.uid == resource.data.ownerId));
 
-      // Attendance fallback subcollection
       match /attendance/{attendanceId} {
          allow read: if request.auth != null && (
            isAdmin() ||
@@ -316,7 +314,9 @@ service cloud.firestore {
              isEventOwner(database, eventId) ||
              isEventOwnerAfter(database, eventId)
            );
-      }
+    }
+
+      // Event Participants Registry
 
       // Event Participants Registry
       match /participants/{participantId} {
@@ -392,13 +392,20 @@ service cloud.firestore {
           isClub()
         ) && (!('userId' in request.resource.data) || request.resource.data.userId == request.auth.uid);
       }
-      
       // Volunteers List
       match /volunteers/{userId} {
         allow read: if true;
         // All writes must go through Cloud Functions to ensure proper point logging
         allow create, update, delete: if false; 
       }
+    }
+
+    match /eventTemplates/{templateId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.ownerId;
+      allow create: if request.auth != null
+                    && request.auth.uid == request.resource.data.ownerId;
+      allow update, delete: if request.auth != null
+                             && request.auth.uid == resource.data.ownerId;
     }
     
     // =========================================================================
