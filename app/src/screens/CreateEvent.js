@@ -61,7 +61,7 @@ const BRANCHES = ['All', 'CSE', 'ETC', 'EE', 'ME', 'Civil'];
 const YEARS = [1, 2, 3, 4];
 
 export default function CreateEvent({ navigation, route }) {
-     console.log("CREATE_EVENT_SCREEN_LOADED");
+    console.log('CREATE_EVENT_SCREEN_LOADED');
     const { user } = useAuth();
     const { theme } = useTheme();
     const styles = useMemo(() => getStyles(theme), [theme]);
@@ -389,27 +389,23 @@ export default function CreateEvent({ navigation, route }) {
     }, []);
 
     const handleCreate = async () => {
-    console.log("TEST_123");
-alert("TEST_123");
-console.log("STEP_1");
-        console.log('HANDLE CREATE CALLED', { title, description, category, campusId, federatedToAll });
         if (loading) return;
 
         if (!title.trim() || !description.trim() || !category) {
             Alert.alert('Missing Info', 'Please fill Title, Description and Category.');
             return;
         }
-        console.log("STEP_2");
         if (!campusId && !federatedToAll) {
-            Alert.alert('Missing Info', 'Please select a campus or mark the event as open to all campuses.');
+            Alert.alert(
+                'Missing Info',
+                'Please select a campus or mark the event as open to all campuses.',
+            );
             return;
         }
-        console.log("STEP_3");
         if (eventMode === 'offline' && !location.trim()) {
             Alert.alert('Location', 'Please specify a venue.');
             return;
         }
-        console.log("STEP_4");
         if (isPaid && (!price || !upiId)) {
             Alert.alert('Payment Info', 'Price and UPI ID are required for paid events.');
             return;
@@ -420,16 +416,11 @@ console.log("STEP_1");
             return;
         }
         setLoading(true);
-        console.log("STEP_5_BEFORE_RATE_LIMIT");
         try {
             // Symmetrical, client-side rate-limiting checks prior to side-effects
             try {
-                console.log("STEP_6_BEFORE_ENFORCE");
-                // await enforceRateLimit(!isEditMode);
-                 console.log("STEP_7_AFTER_ENFORCE");
-                
+                await enforceRateLimit(!isEditMode);
             } catch (rateLimitErr) {
-                 console.log("STEP_8_RATE_LIMIT_ERROR", rateLimitErr);
                 if (rateLimitErr.status === 429) {
                     Alert.alert('Too Many Requests', rateLimitErr.message);
                     setLoading(false);
@@ -1284,7 +1275,7 @@ console.log("STEP_1");
                     >
                         {loading ? (
                             <View style={styles.submitLoadingContent}>
-                              <ActivityIndicator color="#fff" />
+                                <ActivityIndicator color="#fff" />
                                 <Text style={styles.createBtnText}>{submitLabel}</Text>
                             </View>
                         ) : (
